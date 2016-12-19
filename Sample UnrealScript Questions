@@ -1,0 +1,169 @@
+Q1. Complete the following scrip to have an instruction in the function TakeDamage to display your name on the screen for a short time when the player shoots the enemy. 
+
+
+class Q1 extends Actor placeable;
+
+event TakeDamage(int DamageAmount, Controller EventInstigator, vector HitLocation, vector Momentum, class<DamageType> DamageType, optional TraceHitInfo HitInfo, optional Actor DamageCauser)
+{
+worldinfo.game.broadcast(self, "Vivienne Zhu");
+}
+
+defaultproperties
+{
+
+    bBlockActors=True
+    bCollideActors=True
+    Begin Object Class=StaticMeshComponent Name=PickupMesh
+        StaticMesh=StaticMesh'UN_SimpleMeshes.TexPropCube_Dup'
+        Materials(0)=Material'EditorMaterials.WidgetMaterial_X'
+        Scale3D=(X=0.25,Y=0.25,Z=0.5)
+    End Object
+    Components.Add(PickupMesh)
+}
+
+
+
+Q2. Complete the following script for a ball that repeatedly goes and comes back on a horizontal line while it is blinking. The ball blinks after 4 times that the function: Timer is called automatically. 
+Hints: Blink means hide and display the ball.
+
+
+
+class Q2 extends Actor placeable;
+
+var vector v;
+var int i;
+
+function PreBeginPlay()
+{
+    i=1;
+    SetTimer(0.2, true);
+}
+
+function Timer()
+{
+    if(i%5!=0)
+    {
+    if(Location.X<50)
+        setLocation(location+vect(50, 0, 0));
+        else
+        setLocation(location-vect(50, 0, 0));
+    }
+    if(i%5==0)
+    {
+        if(bHidden==false)
+        SetHidden(true);
+        else
+        SetHidden(false);
+    }
+    i++;
+}
+defaultproperties
+{
+    Begin Object Class=StaticMeshComponent Name=PickupMesh
+        StaticMesh= StaticMesh'GDC_Materials.Meshes.S_SimpleSphere_01'
+    End Object
+    Components.Add(PickupMesh)
+}
+
+
+
+Q3. Write an unreal script to generate 20 random integers, sort them in ascending order and display them in the log file.
+
+
+class Q3 extends Actor placeable;
+
+var array<int> arr;
+
+function PostBeginPlay()
+{
+    local int temp, i, j;
+
+    for(i=0; i<20; i++)
+        arr[i]=Rand(50);
+
+    for(i=0; i<20; i++)
+    {
+        for(j=i+1; j<20; j++)
+        {
+            if(arr[i]>arr[j])
+            {
+                temp=arr[i];
+                arr[i]=arr[j];
+                arr[j]=temp;
+            }
+        }
+    }
+
+
+    `log("In ascending order:"@arr[0]@arr[1]@arr[2]@arr[3]@
+    arr[4]@arr[5]@arr[6]@arr[7]@arr[8]@
+    arr[9]@arr[10]@arr[11]@arr[12]@arr[13]@
+    arr[14]@arr[15]@arr[16]@arr[17]@arr[18]
+    @arr[19]);
+}
+
+defaultproperties
+{
+Begin Object Class=SpriteComponent Name=Sprite
+Sprite=Texture2D'EditorResources.S_NavP'
+End Object
+Components.Add(Sprite)
+}
+
+
+
+Q4. Complete the following program to repeatedly and gradually make the room darker and darker until the room gets completely dark. 
+
+
+class Q4 extends PointLightMovable placeable;
+var float x;
+
+function PreBeginPlay() {
+	 x=0.1;
+    super.PreBeginPlay();
+    SetTimer(0.2, true);
+
+
+}
+
+function Timer() {
+LightComponent.SetLightProperties(LightComponent.Brightness-x);
+}
+
+
+
+Q5. Write an unreal script to generate a random number in the range of 0 to 100 inclusive and displays the random number and its corresponding letter grade in the log file. The conversion follows the following rules:
+
+90-100 inclusive is an A
+80-89 inclusive is a B.
+70-79 inclusive is a C
+60-69 inclusive is a D
+Below 60 is an F
+
+class Q5 extends Actor placeable;
+
+function PostBeginPlay()
+{
+    local int n;
+    n=Rand(101);
+    `log(n);
+    if(n>=90)
+    `log("A");
+    else if(n>=80)
+    `log("B");
+    else if(n>=70)
+    `log("C");
+    else if(n>=60)
+    `log("D");
+    else
+    `log("F");
+}
+
+defaultproperties
+{
+Begin Object Class=SpriteComponent Name=Sprite
+Sprite=Texture2D'EditorResources.S_NavP'
+End Object
+Components.Add(Sprite)
+}
+
